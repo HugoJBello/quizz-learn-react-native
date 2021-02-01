@@ -1,0 +1,25 @@
+[{
+  "type": "string",
+  "title": "string",
+  "subtitle": "string",
+  "description": "string",
+  "difficulty": "string",
+  "questions": [
+    {
+      "type": "string",
+      "questionText": "string",
+      "answerOptions": [
+        "str"
+      ],
+      "correctAnswers": [
+        0
+      ],
+      "tips": [
+        ""
+      ],
+      "explanation": "string"
+    }
+  ],
+  "public": true,
+  "date": null
+}]
