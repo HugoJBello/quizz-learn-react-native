@@ -1,14 +1,14 @@
-import {Quiz, UPDATE_QUIZ, UpdateQuizAction} from "../types/quiz";
+import {Quiz, UPDATE_ACTIVE_QUIZ, UpdateActiveQuizAction} from "../types/quiz";
 
 const initial = require("../mock/initialQuizzes.json") as Quiz[]
 const initialQuizState: Quiz = initial[0] as Quiz;
 
-export function quizzReducer(
+export function activeQuizzReducer(
   state: Quiz = initialQuizState,
-  action: UpdateQuizAction,
+  action: UpdateActiveQuizAction,
 ): Quiz {
   switch (action.type) {
-    case UPDATE_QUIZ: {
+    case UPDATE_ACTIVE_QUIZ: {
       return {
         ...state,
         ...action.payload,

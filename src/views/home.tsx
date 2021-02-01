@@ -5,13 +5,15 @@ import {
   View,
   Text,
   SafeAreaView,
-  Button,
 } from 'react-native';
 
 import {Header, Colors} from 'react-native/Libraries/NewAppScreen';
 import {useDispatch, useSelector} from 'react-redux';
 import {User} from '../redux/types/users';
 import {updateStoredUser} from '../redux/actions/user.actions';
+import { Button } from 'react-native-elements';
+import { Divider } from 'react-native-elements';
+import { Tile } from 'react-native-elements';
 
 declare const global: {HermesInternal: null | {}};
 
@@ -31,14 +33,22 @@ const Home = ({navigation}: any) => {
           contentInsetAdjustmentBehavior="automatic"
           style={styles.scrollView}>
           <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One 22</Text>
-              <Button
-                title="Go to Details... again"
-                onPress={() => navigation.push('QuizzesMenu')}
-              />
-            </View>
+            <Divider style={{ backgroundColor: 'blue' }} />
+            <Tile
+                imageSrc={require('../static/images/learning.jpg')}
+                title="Lections"
+                featured
+                caption="Continue with your progress or discover new ones"
+                onPress={() => navigation.push('LecturesMenu')}
+
+            />
+            <Button
+                title="go!"
+                raised
+                onPress={() => navigation.push('LecturesMenu')}
+            />
           </View>
+          <Divider style={{ backgroundColor: 'blue' }} />
         </ScrollView>
       </SafeAreaView>
     </>

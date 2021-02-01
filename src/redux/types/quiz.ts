@@ -1,5 +1,7 @@
 
+
 export interface Quiz {
+    id: string
     type: string,
     title: string,
     subtitle: string,
@@ -20,9 +22,9 @@ export interface Question {
 }
 
 
-export const UPDATE_QUIZ = 'UPDATE_QUIZ';
+export const UPDATE_ACTIVE_QUIZ = 'UPDATE_ACTIVE_QUIZ';
 
-export interface UpdateQuizAction {
-    type: typeof UPDATE_QUIZ;
+export interface UpdateActiveQuizAction {
+    type: typeof UPDATE_ACTIVE_QUIZ;
     payload: Quiz;
 }

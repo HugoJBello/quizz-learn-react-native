@@ -1,23 +1,25 @@
 [{
   "type": "string",
-  "title": "string",
-  "subtitle": "string",
-  "description": "string",
+  "title": "Lection 1 quiz",
+  "subtitle": "subtitle",
+  "description": "this is the lection One quiz",
   "difficulty": "string",
   "questions": [
     {
       "type": "string",
-      "questionText": "string",
+      "questionText": "Please choose the right option",
       "answerOptions": [
-        "str"
+        "answer 1",
+        "answer 2",
+        "answer 3"
       ],
       "correctAnswers": [
         0
       ],
       "tips": [
-        ""
+        "tip"
       ],
-      "explanation": "string"
+      "explanation": "this is the explanation"
     }
   ],
   "public": true,

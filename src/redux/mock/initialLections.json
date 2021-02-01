@@ -1,0 +1,38 @@
+[
+  {
+    "id": "lec1",
+    "type": "string",
+    "title": "Lection 1",
+    "subtitle": "lection",
+    "description": "this is the lection One",
+    "difficulty": "medium",
+    "parts": [
+      "part1",
+      "part2"
+    ]
+  },
+  {
+    "id": "lec2",
+    "type": "string",
+    "title": "Lection 2",
+    "subtitle": "lection",
+    "description": "this is the lection One",
+    "difficulty": "medium",
+    "parts": [
+      "part1",
+      "part2"
+    ]
+  },
+  {
+    "id": "lec3",
+    "type": "string",
+    "title": "Lection 2",
+    "subtitle": "lection",
+    "description": "this is the lection One",
+    "difficulty": "medium",
+    "parts": [
+      "part1",
+      "part2"
+    ]
+  }
+]
