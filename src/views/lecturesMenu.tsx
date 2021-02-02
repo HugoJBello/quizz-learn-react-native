@@ -6,7 +6,7 @@ import {useSelector} from 'react-redux';
 import {User} from '../redux/types/users';
 import {Button, Header, ThemeContext, Tile} from "react-native-elements";
 import { useTranslation } from "react-i18next";
-import {Lection} from "../redux/types/lection";
+import {Lesson} from "../redux/types/lesson";
 import { ListItem, Avatar } from 'react-native-elements'
 
 declare const global: {HermesInternal: null | {}};
@@ -15,11 +15,10 @@ const LecturesMenu = ({navigation}:any) => {
   const { t } = useTranslation();
 
   const user = useSelector((state: any) => state.user as User);
-  const lections = useSelector((state: any) => state.lections as Lection[]);
+  const lections = useSelector((state: any) => state.lessons as Lesson[]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {
-    console.log(lections);
   }, []);
 
   return (

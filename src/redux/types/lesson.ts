@@ -1,6 +1,6 @@
 import {Quiz} from "./quiz";
 
-export interface Lection {
+export interface Lesson {
     id: string,
     type: string,
     title: string,
@@ -15,17 +15,17 @@ export interface Lection {
     date: Date
 }
 
-export const UPDATE_ACTIVE_LECTION = 'UPDATE_ACTIVE_LECTION';
+export const UPDATE_ACTIVE_LESSON = 'UPDATE_ACTIVE_LECTION';
 
-export interface UpdateActiveLectionAction {
-    type: typeof UPDATE_ACTIVE_LECTION;
-    payload: Lection;
+export interface UpdateActiveLessonAction {
+    type: typeof UPDATE_ACTIVE_LESSON;
+    payload: Lesson;
 }
 
 
-export const UPDATE_LECTIONS = 'UPDATE_LECTIONS';
+export const UPDATE_LESSONS = 'UPDATE_LECTIONS';
 
 export interface UpdateLectionsAction {
-    type: typeof UPDATE_LECTIONS;
-    payload: Lection[];
+    type: typeof UPDATE_LESSONS;
+    payload: Lesson[];
 }

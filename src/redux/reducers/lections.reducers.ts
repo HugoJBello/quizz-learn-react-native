@@ -1,18 +1,18 @@
 import {
-  Lection,
-  UPDATE_LECTIONS,
+  Lesson,
+  UPDATE_LESSONS,
   UpdateLectionsAction
-} from "../types/lection";
+} from "../types/lesson";
 
-const initial = require("../mock/initialLections.json") as Lection[]
-const initialLectionState: Lection[] = initial
+const initial = require("../mock/initialLections.json") as Lesson[]
+const initialLectionState: Lesson[] = initial
 
-export function lectionsReducer(
-  state: Lection[] = initialLectionState,
+export function lessonsReducer(
+  state: Lesson[] = initialLectionState,
   action: UpdateLectionsAction,
-): Lection[] {
+): Lesson[] {
   switch (action.type) {
-    case UPDATE_LECTIONS: {
+    case UPDATE_LESSONS: {
       return {
         ...state,
         ...action.payload,

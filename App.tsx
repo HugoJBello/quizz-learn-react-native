@@ -16,6 +16,7 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {I18nextProvider} from 'react-i18next';
 import {i18n} from "./i18n";
 import Lecture from "./src/views/lecture";
+import Startup from "./src/components/startup";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -29,6 +30,7 @@ const App = () => {
                 <Provider store={store}>
                     <ThemeProvider theme={theme}>
                         <StatusBar barStyle="dark-content"/>
+                        <Startup/>
                         <AppearanceProvider>
                             <NavigationContainer>
                                 <StackMenu/>

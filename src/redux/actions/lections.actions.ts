@@ -1,12 +1,12 @@
 import {ActionCreator} from 'redux';
 import {
-  Lection,
-  UPDATE_ACTIVE_LECTION,
-  UPDATE_LECTIONS,
-  UpdateActiveLectionAction,
+  Lesson,
+  UPDATE_ACTIVE_LESSON,
+  UPDATE_LESSONS,
+  UpdateActiveLessonAction,
   UpdateLectionsAction
-} from "../types/lection";
+} from "../types/lesson";
 
-export const updateStoredLections: ActionCreator<UpdateLectionsAction> = (lections: Lection[]) => {
-  return {type: UPDATE_LECTIONS, payload: lections};
+export const updateStoredLections: ActionCreator<UpdateLectionsAction> = (lections: Lesson[]) => {
+  return {type: UPDATE_LESSONS, payload: lections};
 };
