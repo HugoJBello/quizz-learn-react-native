@@ -4,6 +4,7 @@ export interface Lesson {
     id: string,
     type: string,
     title: string,
+    description: string,
     frontImage: string,
     subtitle: string,
     parts: string[],

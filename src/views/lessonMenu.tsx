@@ -11,7 +11,7 @@ import { ListItem, Avatar } from 'react-native-elements'
 
 declare const global: {HermesInternal: null | {}};
 
-const LecturesMenu = ({navigation}:any) => {
+const LessonMenu = ({navigation}:any) => {
   const { t } = useTranslation();
 
   const user = useSelector((state: any) => state.user as User);
@@ -38,7 +38,7 @@ const LecturesMenu = ({navigation}:any) => {
             {
               lections.map((l, i) => (
                   <ListItem key={i}
-                            onPress={() => navigation.navigate('Lecture',{lection:l})}
+                            onPress={() => navigation.navigate('LessonEntry',{lesson:l})}
                             bottomDivider>
                     <Avatar source= {require('../static/images/classroom.jpg')} />
                     <ListItem.Content>
@@ -66,4 +66,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LecturesMenu;
+export default LessonMenu;

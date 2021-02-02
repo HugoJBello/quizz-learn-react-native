@@ -9,14 +9,15 @@ import {createStackNavigator} from '@react-navigation/stack';
 
 import Home from './src/views/home';
 import {store} from './src/redux/store';
-import LecturesMenu from './src/views/lecturesMenu';
+import LessonMenu from './src/views/lessonMenu';
 import {ThemeProvider} from 'react-native-elements';
 import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {I18nextProvider} from 'react-i18next';
 import {i18n} from "./i18n";
-import Lecture from "./src/views/lecture";
+import Lesson from "./src/views/lessonEntry";
 import Startup from "./src/components/startup";
+import LessonEntry from "./src/views/lessonEntry";
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -66,11 +67,11 @@ const StackMenu = () => {
         <Stack.Screen
             name="LecturesMenu"
             options={{title: 'Lectures and quizzes'}}
-            component={LecturesMenu}/>
+            component={LessonMenu}/>
         <Stack.Screen
-            name="Lecture"
-            options={{title: 'Lecture'}}
-            component={Lecture}/>
+            name="LessonEntry"
+            options={{title: 'Lesson'}}
+            component={LessonEntry}/>
     </Stack.Navigator>
 }
 
