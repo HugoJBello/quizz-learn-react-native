@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 import {Progress} from "../redux/types/progress";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import {AsyncStorage} from "@react-native-community/async-storage";
+import {getProgressStateDb} from "../services/progressService";
 
 const Startup = () => {
     const { t } = useTranslation();
@@ -20,14 +21,7 @@ const Startup = () => {
 
 
     const getInitialProgressState = async ():Promise<Progress> => {
-        try {
-            const progress = await AsyncStorage.getItem('progress');
-            return JSON.parse(progress as string) as Progress
-        } catch (e) {
-            console.log(e)
-            return {} as Progress
-        }
-
+        return await getProgressStateDb()
     }
 
     return (

@@ -4,7 +4,7 @@ export interface Progress {
     lections: { [lectionId: string]: LectionProgress },
     points: number,
     level: number,
-    badges: string,
+    badges: string[],
     lastActive: Date
 }
 

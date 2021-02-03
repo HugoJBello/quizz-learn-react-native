@@ -7,6 +7,7 @@ import {Card, ListItem, Button, Icon, Divider, Avatar} from 'react-native-elemen
 import {Lesson} from "../redux/types/lesson";
 import {updateStoredActiveLesson} from "../redux/actions/activeLesson.actions";
 import { Text } from 'react-native-elements';
+import {Progress} from "../redux/types/progress";
 
 const LessonEntry = ({route, navigation}: any) => {
     const {t} = useTranslation();
@@ -15,8 +16,10 @@ const LessonEntry = ({route, navigation}: any) => {
     lesson = lesson as Lesson
 
     const user = useSelector((state: any) => state.user as User);
+    const progress = useSelector((state: any) => state.progress as Progress);
 
     useEffect(() => {
+        console.log(progress)
         dispatch(updateStoredActiveLesson(lesson))
     }, [lesson]);
 
