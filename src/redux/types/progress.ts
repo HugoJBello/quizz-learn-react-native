@@ -1,21 +1,27 @@
 import {Quiz} from "./quiz";
 
 export interface Progress {
-    lections: { [lectionId: string]: LectionProgress },
+    lessons: { [lectionId: string]: LessonsProgress },
     points: number,
     level: number,
     badges: string[],
     lastActive: Date
 }
 
-export interface LectionProgress {
-    globalStatus: LectionProgress
+export interface LessonsProgress {
+    globalStatus: LectionStatus
+    percentDone: number
     lastPart: number
-    finishedInitialQuizz: boolean
-    finishedFinalQuizz: boolean
+    initialQuizProgress: QuizStatus
+    finalQuizProgress: QuizStatus
 }
 
 export enum LectionStatus {
+    STARTED = "STARTED",
+    FINISHED = "FINISHED"
+}
+
+export enum QuizStatus {
     STARTED = "STARTED",
     FINISHED = "FINISHED"
 }

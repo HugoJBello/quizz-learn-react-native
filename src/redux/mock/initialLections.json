@@ -6,6 +6,78 @@
     "subtitle": "lection",
     "description": "this is the lection One",
     "difficulty": "medium",
+    "initialQuiz": {
+      "type": "string",
+      "title": "Lection 1 initial",
+      "subtitle": "subtitle",
+      "description": "this is the lection One quiz",
+      "difficultyPercent": 10,
+      "quizType": "INITIAL",
+      "questions": [
+        {
+          "type": "string",
+          "questionText": "Please choose the right option",
+          "answerOptions": [
+            "answer 1",
+            "answer 2",
+            "answer 3"
+          ],
+          "correctAnswers": [
+            0
+          ],
+          "tips": [
+            "tip"
+          ],
+          "explanation": "this is the explanation"
+        },
+        {
+          "type": "string",
+          "questionText": "Please choose the right option",
+          "answerOptions": [
+            "answer 1",
+            "answer 2",
+            "answer 3"
+          ],
+          "correctAnswers": [
+            0
+          ],
+          "tips": [
+            "tip"
+          ],
+          "explanation": "this is the explanation"
+        }
+      ],
+      "public": true,
+      "date": null
+    },
+    "finalQuiz": {
+      "type": "string",
+      "title": "Lection 1 final",
+      "subtitle": "subtitle",
+      "description": "this is the lection One quiz",
+      "difficultyPercent": 10,
+      "quizType": "FINAL",
+      "questions": [
+        {
+          "type": "string",
+          "questionText": "Please choose the right option",
+          "answerOptions": [
+            "answer 1",
+            "answer 2",
+            "answer 3"
+          ],
+          "correctAnswers": [
+            0
+          ],
+          "tips": [
+            "tip"
+          ],
+          "explanation": "this is the explanation"
+        }
+      ],
+      "public": true,
+      "date": null
+    },
     "parts": [
       "part1",
       "part2"
@@ -26,9 +98,9 @@
   {
     "id": "lec3",
     "type": "string",
-    "title": "Lection 2",
+    "title": "Lection 3",
     "subtitle": "lection",
-    "description": "this is the lection One",
+    "description": "this is the lection three",
     "difficulty": "medium",
     "parts": [
       "part1",

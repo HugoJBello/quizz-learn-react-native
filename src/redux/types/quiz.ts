@@ -1,15 +1,21 @@
-
-
 export interface Quiz {
     id: string
+    lessonId: string
+    quizType: QuizType
     type: string,
     title: string,
     subtitle: string,
     description: string,
-    difficulty: string,
+    difficultyPercent: number,
     questions: Question[],
     public: boolean,
     date: Date
+}
+
+export enum QuizType {
+    INITIAL = "INITIAL",
+    FINAL = "FINAL",
+    GLOBAL = "GLOBAL"
 }
 
 export interface Question {

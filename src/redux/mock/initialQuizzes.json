@@ -4,6 +4,7 @@
   "subtitle": "subtitle",
   "description": "this is the lection One quiz",
   "difficulty": "string",
+  "quizType": "INITIAL",
   "questions": [
     {
       "type": "string",
