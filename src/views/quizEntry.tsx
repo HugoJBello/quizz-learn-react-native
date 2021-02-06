@@ -10,7 +10,7 @@ import {Progress} from "../redux/types/progress";
 import {updateProgressStartLesson, updateProgressStartQuiz} from "../services/progressService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import {ProgressBar, Colors} from 'react-native-paper';
-import {Quiz} from "../redux/types/quiz";
+import {Question, Quiz} from "../redux/types/quiz";
 import {updateStoredActiveQuiz} from "../redux/actions/activeQuiz.actions";
 
 const QuizEntry = ({route, navigation}: any) => {
@@ -24,7 +24,7 @@ const QuizEntry = ({route, navigation}: any) => {
     const progress = useSelector((state: any) => state.progress as Progress);
 
     useEffect(() => {
-        console.log(progress)
+        console.log(quiz.questions)
         dispatch(updateStoredActiveQuiz(quiz))
 
         updateProgress(progress, lesson)
@@ -36,12 +36,11 @@ const QuizEntry = ({route, navigation}: any) => {
     }
 
     const quizDetailsCard = () => {
-        return <Card>
+        return <Card containerStyle={styles.details}>
             <Card.Title>{quiz.title}</Card.Title>
 
             <ListItem>
                 <Icon name="info" type="ant-design"/>
-
                 <ListItem.Content>
                     <ListItem.Title>{quiz.description}</ListItem.Title>
                 </ListItem.Content>
@@ -56,7 +55,6 @@ const QuizEntry = ({route, navigation}: any) => {
 
             <ListItem>
                 <Badge>{quiz.questions.length}</Badge>
-
                 <ListItem.Content>
                     <ListItem.Subtitle> {t('questions')} </ListItem.Subtitle>
                 </ListItem.Content>
@@ -65,9 +63,22 @@ const QuizEntry = ({route, navigation}: any) => {
         </Card>
     }
 
-    const questionCard = () => {
-        return <Card>
-            <Card.Title>{quiz.title}</Card.Title>
+    const questionCard = (question: Question, index: number) => {
+        return <Card containerStyle={styles.question}>
+            <Card.Title>{index + 1}</Card.Title>
+            <ListItem>
+                <Icon name="flash" type="entypo"/>
+                <ListItem.Content>
+                    <ListItem.Title>{question.questionText}</ListItem.Title>
+                </ListItem.Content>
+            </ListItem>
+
+            {question.answerOptions && question.answerOptions.map((answer: string, index: number) => <ListItem>
+                    <ListItem.Content key={index}>
+                        <ListItem.Subtitle>{answer}</ListItem.Subtitle>
+                    </ListItem.Content>
+                </ListItem>)
+            }
         </Card>
     }
 
@@ -92,7 +103,7 @@ const QuizEntry = ({route, navigation}: any) => {
                     style={styles.scrollView}>
                     {quiz && <View>
                         {quizDetailsCard()}
-                        {questionCard()}
+                        {quiz.questions && quiz.questions.map((question: Question, index: number) => questionCard(question, index))}
                     </View>
                     }
                 </ScrollView>
@@ -104,6 +115,12 @@ const QuizEntry = ({route, navigation}: any) => {
 };
 const styles = StyleSheet.create({
     scrollView: {},
+    details:{borderRadius: 10,
+        borderWidth:2
+    },
+    question: {marginLeft:30,
+        marginRight:30,
+        borderRadius: 10},
     body: {
         padding: 10
     },
