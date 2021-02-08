@@ -1,22 +1,23 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {Badge} from 'react-native-paper';
 import {useTranslation} from "react-i18next";
-import {Card, Divider, Icon, ListItem, Text} from 'react-native-elements'
+import {Card, CheckBox, Icon, ListItem, Text} from 'react-native-elements'
 import {Lesson} from "../redux/types/lesson";
-import {updateStoredActiveLesson} from "../redux/actions/activeLesson.actions";
 import {Progress} from "../redux/types/progress";
-import {updateProgressStartLesson, updateProgressStartQuiz} from "../services/progressService";
+import {updateProgressStartQuiz} from "../services/progressService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import {ProgressBar, Colors} from 'react-native-paper';
 import {Question, Quiz} from "../redux/types/quiz";
 import {updateStoredActiveQuiz} from "../redux/actions/activeQuiz.actions";
+import {ChosenAnswerMultichoice, QuizUserSolution} from "../redux/types/quizUserSolution";
 
 const QuizEntry = ({route, navigation}: any) => {
     const {t} = useTranslation();
     const dispatch = useDispatch()
     let {lesson, quiz} = route.params
+    const [quizUserSolution, setQuizUserSolution] = useState({} as QuizUserSolution)
 
     lesson = lesson as Lesson
     quiz = quiz as Quiz
@@ -30,9 +31,27 @@ const QuizEntry = ({route, navigation}: any) => {
         updateProgress(progress, lesson)
     }, [lesson]);
 
+    useEffect(() => {
+        const quizUserSolution = {quizId:quiz.id, lessonId: lesson.id} as QuizUserSolution
+        const answers = [] as ChosenAnswerMultichoice[]
+        quizUserSolution.userAnswers = answers
+        quizUserSolution.startedAt = new Date()
+        setQuizUserSolution(quizUserSolution)
+        console.log(quizUserSolution)
+    }, [quiz, lesson]);
+
     const updateProgress = async (progress: Progress, lesson: Lesson) => {
         await updateProgressStartQuiz(progress, lesson, quiz)
         dispatch(updateStoredProgress(progress))
+    }
+
+    const isChecked = (questionIndex: number, answerIndex: number):boolean => {
+        if (quizUserSolution && quizUserSolution.userAnswers){
+            const answer = quizUserSolution.userAnswers.find((answ) => answ.questionIndex==questionIndex) as ChosenAnswerMultichoice
+           if (!answer) return false
+            return answer.selectedOptions.includes(answerIndex)
+        }
+        return false
     }
 
     const quizDetailsCard = () => {
@@ -63,9 +82,9 @@ const QuizEntry = ({route, navigation}: any) => {
         </Card>
     }
 
-    const questionCard = (question: Question, index: number) => {
+    const questionCard = (question: Question, questionIndex: number) => {
         return <Card containerStyle={styles.question}>
-            <Card.Title>{index + 1}</Card.Title>
+            <Card.Title>{questionIndex + 1}</Card.Title>
             <ListItem>
                 <Icon name="flash" type="entypo"/>
                 <ListItem.Content>
@@ -73,11 +92,17 @@ const QuizEntry = ({route, navigation}: any) => {
                 </ListItem.Content>
             </ListItem>
 
-            {question.answerOptions && question.answerOptions.map((answer: string, index: number) => <ListItem>
-                    <ListItem.Content key={index}>
-                        <ListItem.Subtitle>{answer}</ListItem.Subtitle>
+            {question.answerOptions && question.answerOptions.map((answer: string, answerIndex: number) =>
+                <ListItem key={answerIndex}>
+                    <CheckBox
+                        key={answerIndex}
+                        checked={isChecked(questionIndex,answerIndex)}
+                    />
+                    <ListItem.Content>
+                        <ListItem.Title>{answer}</ListItem.Title>
                     </ListItem.Content>
-                </ListItem>)
+                </ListItem>
+               )
             }
         </Card>
     }

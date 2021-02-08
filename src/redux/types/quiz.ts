@@ -27,7 +27,6 @@ export interface Question {
     explanation: string
 }
 
-
 export const UPDATE_ACTIVE_QUIZ = 'UPDATE_ACTIVE_QUIZ';
 
 export interface UpdateActiveQuizAction {
