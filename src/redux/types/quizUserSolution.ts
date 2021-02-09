@@ -1,4 +1,5 @@
 export interface QuizUserSolution {
+    id: string,
     quizId: string,
     lessonId: string,
     userAnswers: ChosenAnswer[],

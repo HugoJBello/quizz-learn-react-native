@@ -7,7 +7,7 @@
     "description": "this is the lection One",
     "difficulty": "medium",
     "initialQuiz": {
-      "id": "qz1initiall1",
+      "id": "qz1_initiall1",
       "type": "string",
       "title": "Lection 1 initial",
       "subtitle": "subtitle",

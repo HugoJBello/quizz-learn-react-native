@@ -12,6 +12,7 @@ import {ProgressBar, Colors} from 'react-native-paper';
 import {Question, Quiz} from "../redux/types/quiz";
 import {updateStoredActiveQuiz} from "../redux/actions/activeQuiz.actions";
 import {ChosenAnswerMultichoice, QuizUserSolution} from "../redux/types/quizUserSolution";
+import {getUserSolutionDb, saveUserSolutionDb} from "../services/userSolutionService";
 
 const QuizEntry = ({route, navigation}: any) => {
     const {t} = useTranslation();
@@ -23,6 +24,7 @@ const QuizEntry = ({route, navigation}: any) => {
     quiz = quiz as Quiz
 
     const progress = useSelector((state: any) => state.progress as Progress);
+    const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
 
     useEffect(() => {
         console.log(quiz.questions)
@@ -32,26 +34,66 @@ const QuizEntry = ({route, navigation}: any) => {
     }, [lesson]);
 
     useEffect(() => {
-        const quizUserSolution = {quizId:quiz.id, lessonId: lesson.id} as QuizUserSolution
-        const answers = [] as ChosenAnswerMultichoice[]
-        quizUserSolution.userAnswers = answers
-        quizUserSolution.startedAt = new Date()
-        setQuizUserSolution(quizUserSolution)
-        console.log(quizUserSolution)
+        getPreviousSolution(quiz).then((sol: QuizUserSolution | null) => {
+            if (!sol) {
+                const quizUserSolution = {quizId: quiz.id, lessonId: lesson.id} as QuizUserSolution
+                const answers = [] as ChosenAnswerMultichoice[]
+                quizUserSolution.userAnswers = answers
+                quizUserSolution.startedAt = new Date()
+                setQuizUserSolution(quizUserSolution)
+                saveUserSolutionDb(quizUserSolution)
+            } else {
+                setQuizUserSolution(sol)
+            }
+            console.log(sol)
+        })
     }, [quiz, lesson]);
+
+    const getPreviousSolution = async (quiz: Quiz): Promise<QuizUserSolution | null> => {
+        return getUserSolutionDb(quiz.id)
+    }
 
     const updateProgress = async (progress: Progress, lesson: Lesson) => {
         await updateProgressStartQuiz(progress, lesson, quiz)
         dispatch(updateStoredProgress(progress))
     }
 
-    const isChecked = (questionIndex: number, answerIndex: number):boolean => {
-        if (quizUserSolution && quizUserSolution.userAnswers){
-            const answer = quizUserSolution.userAnswers.find((answ) => answ.questionIndex==questionIndex) as ChosenAnswerMultichoice
-           if (!answer) return false
+    const isChecked = (quizUserSolution:QuizUserSolution, questionIndex: number, answerIndex: number): boolean => {
+        if (quizUserSolution && quizUserSolution.userAnswers) {
+            const answer = quizUserSolution.userAnswers.find((answ) => answ.questionIndex == questionIndex) as ChosenAnswerMultichoice
+            if (!answer) return false
             return answer.selectedOptions.includes(answerIndex)
         }
         return false
+    }
+
+    const check = (questionIndex: number, answerIndex: number) => {
+        console.log(quizUserSolution)
+        if (quizUserSolution && quizUserSolution.userAnswers) {
+            let answer = quizUserSolution.userAnswers.find((answ) => answ.questionIndex == questionIndex) as ChosenAnswerMultichoice
+
+            if (!answer) {
+                answer = {questionIndex} as ChosenAnswerMultichoice
+                answer.selectedOptions = [answerIndex]
+                quizUserSolution.userAnswers.push(answer)
+            }
+
+            checkResponseInAnswer(answer, answerIndex)
+            saveUserSolutionDb(quizUserSolution)
+            forceUpdate()
+
+        }
+    }
+
+    const checkResponseInAnswer = (answer: ChosenAnswerMultichoice, answerIndex: number) => {
+        if (answer.selectedOptions.includes(answerIndex)) {
+            console.log(answer)
+            answer.selectedOptions.splice(answer.selectedOptions.indexOf(answerIndex), 1)
+            console.log(answer, answerIndex)
+        } else {
+            answer.selectedOptions.push(answerIndex)
+            answer.selectedOptions.filter((element: number, i: number) => i === answer.selectedOptions.indexOf(element))
+        }
     }
 
     const quizDetailsCard = () => {
@@ -95,14 +137,14 @@ const QuizEntry = ({route, navigation}: any) => {
             {question.answerOptions && question.answerOptions.map((answer: string, answerIndex: number) =>
                 <ListItem key={answerIndex}>
                     <CheckBox
-                        key={answerIndex}
-                        checked={isChecked(questionIndex,answerIndex)}
+                        onPress={() => check(questionIndex, answerIndex)}
+                        checked={isChecked(quizUserSolution,questionIndex, answerIndex)}
                     />
                     <ListItem.Content>
                         <ListItem.Title>{answer}</ListItem.Title>
                     </ListItem.Content>
                 </ListItem>
-               )
+            )
             }
         </Card>
     }
@@ -140,12 +182,15 @@ const QuizEntry = ({route, navigation}: any) => {
 };
 const styles = StyleSheet.create({
     scrollView: {},
-    details:{borderRadius: 10,
-        borderWidth:2
+    details: {
+        borderRadius: 10,
+        borderWidth: 2
     },
-    question: {marginLeft:30,
-        marginRight:30,
-        borderRadius: 10},
+    question: {
+        marginLeft: 30,
+        marginRight: 30,
+        borderRadius: 10
+    },
     body: {
         padding: 10
     },
