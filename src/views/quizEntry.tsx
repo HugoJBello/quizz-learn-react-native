@@ -6,13 +6,14 @@ import {useTranslation} from "react-i18next";
 import {Card, CheckBox, Icon, ListItem, Text} from 'react-native-elements'
 import {Lesson} from "../redux/types/lesson";
 import {Progress} from "../redux/types/progress";
-import {updateProgressStartQuiz} from "../services/progressService";
+import {updateProgressEndQuiz, updateProgressStartQuiz} from "../services/progressService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import {ProgressBar, Colors} from 'react-native-paper';
+import {Button} from "react-native-elements";
 import {Question, Quiz} from "../redux/types/quiz";
 import {updateStoredActiveQuiz} from "../redux/actions/activeQuiz.actions";
 import {ChosenAnswerMultichoice, QuizUserSolution} from "../redux/types/quizUserSolution";
-import {getUserSolutionDb, saveUserSolutionDb} from "../services/userSolutionService";
+import {getUserSolutionDb, saveUserSolutionDb, sendUserSolutionDb} from "../services/userSolutionService";
 
 const QuizEntry = ({route, navigation}: any) => {
     const {t} = useTranslation();
@@ -30,7 +31,7 @@ const QuizEntry = ({route, navigation}: any) => {
         console.log(quiz.questions)
         dispatch(updateStoredActiveQuiz(quiz))
 
-        updateProgress(progress, lesson)
+        updateProgressStart(progress, lesson)
     }, [lesson]);
 
     useEffect(() => {
@@ -45,7 +46,6 @@ const QuizEntry = ({route, navigation}: any) => {
             } else {
                 setQuizUserSolution(sol)
             }
-            console.log(sol)
         })
     }, [quiz, lesson]);
 
@@ -53,12 +53,12 @@ const QuizEntry = ({route, navigation}: any) => {
         return getUserSolutionDb(quiz.id)
     }
 
-    const updateProgress = async (progress: Progress, lesson: Lesson) => {
+    const updateProgressStart = async (progress: Progress, lesson: Lesson) => {
         await updateProgressStartQuiz(progress, lesson, quiz)
         dispatch(updateStoredProgress(progress))
     }
 
-    const isChecked = (quizUserSolution:QuizUserSolution, questionIndex: number, answerIndex: number): boolean => {
+    const isChecked = (quizUserSolution: QuizUserSolution, questionIndex: number, answerIndex: number): boolean => {
         if (quizUserSolution && quizUserSolution.userAnswers) {
             const answer = quizUserSolution.userAnswers.find((answ) => answ.questionIndex == questionIndex) as ChosenAnswerMultichoice
             if (!answer) return false
@@ -68,18 +68,18 @@ const QuizEntry = ({route, navigation}: any) => {
     }
 
     const check = (questionIndex: number, answerIndex: number) => {
-        console.log(quizUserSolution)
         if (quizUserSolution && quizUserSolution.userAnswers) {
             let answer = quizUserSolution.userAnswers.find((answ) => answ.questionIndex == questionIndex) as ChosenAnswerMultichoice
-
+            console.log(answer, answerIndex)
             if (!answer) {
                 answer = {questionIndex} as ChosenAnswerMultichoice
-                answer.selectedOptions = [answerIndex]
+                answer.selectedOptions = []
                 quizUserSolution.userAnswers.push(answer)
             }
-
             checkResponseInAnswer(answer, answerIndex)
             saveUserSolutionDb(quizUserSolution)
+            console.log(quizUserSolution.userAnswers)
+
             forceUpdate()
 
         }
@@ -87,13 +87,12 @@ const QuizEntry = ({route, navigation}: any) => {
 
     const checkResponseInAnswer = (answer: ChosenAnswerMultichoice, answerIndex: number) => {
         if (answer.selectedOptions.includes(answerIndex)) {
-            console.log(answer)
             answer.selectedOptions.splice(answer.selectedOptions.indexOf(answerIndex), 1)
-            console.log(answer, answerIndex)
         } else {
             answer.selectedOptions.push(answerIndex)
-            answer.selectedOptions.filter((element: number, i: number) => i === answer.selectedOptions.indexOf(element))
+            answer.selectedOptions = answer.selectedOptions.filter((element: number, i: number) => i === answer.selectedOptions.indexOf(element))
         }
+
     }
 
     const quizDetailsCard = () => {
@@ -124,8 +123,29 @@ const QuizEntry = ({route, navigation}: any) => {
         </Card>
     }
 
+
+    const sendCard = () => {
+        return <Card containerStyle={styles.sendCard}>
+            <Button
+                title={t('Send')}
+                raised
+                onPress={sendResults}
+            />
+        </Card>
+    }
+
+    const sendResults = async () => {
+        try {
+            await sendUserSolutionDb(quizUserSolution)
+            await updateProgressEnd(progress, lesson)
+            navigation.navigate('QuizResults', {lesson, quiz, quizUserSolution})
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
     const questionCard = (question: Question, questionIndex: number) => {
-        return <Card containerStyle={styles.question}>
+        return <Card key={questionIndex} containerStyle={styles.question}>
             <Card.Title>{questionIndex + 1}</Card.Title>
             <ListItem>
                 <Icon name="flash" type="entypo"/>
@@ -135,10 +155,10 @@ const QuizEntry = ({route, navigation}: any) => {
             </ListItem>
 
             {question.answerOptions && question.answerOptions.map((answer: string, answerIndex: number) =>
-                <ListItem key={answerIndex}>
+                <ListItem key={"_" + answerIndex}>
                     <CheckBox
                         onPress={() => check(questionIndex, answerIndex)}
-                        checked={isChecked(quizUserSolution,questionIndex, answerIndex)}
+                        checked={isChecked(quizUserSolution, questionIndex, answerIndex)}
                     />
                     <ListItem.Content>
                         <ListItem.Title>{answer}</ListItem.Title>
@@ -151,16 +171,37 @@ const QuizEntry = ({route, navigation}: any) => {
 
     const progressCard = () => {
         // @ts-ignore
-        return <Card>
+        return <Card containerStyle={styles.details}>
             <ProgressBar progress={getProgressInQuizz()} color={Colors.red800}/>
         </Card>
     }
 
     const getProgressInQuizz = () => {
-        if (progress && lesson && progress.lessons && progress.lessons[lesson.id]) {
-            return progress.lessons[lesson.id].percentDone / 100
+        if (quizUserSolution.completed) {
+            return 1
         }
+
+
+        if (!quizUserSolution.userAnswers || !quiz.questions) {
+            return 0
+        }
+
+        const completedAns = quizUserSolution.userAnswers.filter((ans) => {
+            return (ans as ChosenAnswerMultichoice).selectedOptions.length > 0
+        })
+
+        if (!completedAns) {
+            return 0
+        }
+
+        return (completedAns.length / quiz.questions.length) - 0.02
     }
+
+    const updateProgressEnd = async (progress: Progress, lesson: Lesson) => {
+        await updateProgressEndQuiz(progress, lesson, quiz)
+        dispatch(updateStoredProgress(progress))
+    }
+
 
     return (
         <>
@@ -170,7 +211,9 @@ const QuizEntry = ({route, navigation}: any) => {
                     style={styles.scrollView}>
                     {quiz && <View>
                         {quizDetailsCard()}
+                        {progressCard()}
                         {quiz.questions && quiz.questions.map((question: Question, index: number) => questionCard(question, index))}
+                        {sendCard()}
                     </View>
                     }
                 </ScrollView>
@@ -185,6 +228,10 @@ const styles = StyleSheet.create({
     details: {
         borderRadius: 10,
         borderWidth: 2
+    },
+    buttonSend: {backgroundColor: 'blue'},
+    sendCard: {
+        marginBottom: 30,
     },
     question: {
         marginLeft: 30,

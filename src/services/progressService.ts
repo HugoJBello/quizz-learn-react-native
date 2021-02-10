@@ -4,10 +4,10 @@ import {Lesson} from "../redux/types/lesson";
 import {Quiz, QuizType} from "../redux/types/quiz";
 
 
-export const getProgressStateDb = async ():Promise<Progress> => {
+export const getProgressStateDb = async (): Promise<Progress> => {
     try {
         const progressStr = await AsyncStorage.getItem('progress');
-        const progress =  JSON.parse(progressStr as string) as Progress
+        const progress = JSON.parse(progressStr as string) as Progress
         if (!progress || !progress.lastActive) {
             return initializeProgress()
         }
@@ -18,13 +18,13 @@ export const getProgressStateDb = async ():Promise<Progress> => {
     }
 }
 
-export const initializeProgress = ():Progress => {
+export const initializeProgress = (): Progress => {
     return {
-        lastActive:new Date(),
-        level:0,
-        points:0,
+        lastActive: new Date(),
+        level: 0,
+        points: 0,
         lessons: {},
-        badges:[]
+        badges: []
     } as Progress
 }
 
@@ -38,26 +38,48 @@ export const updateProgressStateDb = async (progress: Progress) => {
     }
 }
 
-export const updateProgressStartLesson = async (progress: Progress, lesson:Lesson) => {
+export const updateProgressStartLesson = async (progress: Progress, lesson: Lesson) => {
     progress.lastActive = new Date()
-    if (!progress.lessons[lesson.id]){
-        progress.lessons[lesson.id] = {globalStatus: LectionStatus.STARTED,
-            percentDone:3} as LessonsProgress
+    if (!progress.lessons[lesson.id]) {
+        progress.lessons[lesson.id] = {
+            globalStatus: LectionStatus.STARTED,
+            percentDone: 3
+        } as LessonsProgress
     }
     await updateProgressStateDb(progress)
 }
 
-export const updateProgressStartQuiz = async (progress: Progress, lesson:Lesson, quiz:Quiz) => {
+export const updateProgressStartQuiz = async (progress: Progress, lesson: Lesson, quiz: Quiz) => {
     progress.lastActive = new Date()
-    if (!progress.lessons[lesson.id]){
+    if (!progress.lessons[lesson.id]) {
         progress.lessons[lesson.id] = {globalStatus: LectionStatus.STARTED} as LessonsProgress
     }
-    progress.lessons[lesson.id].percentDone = 7
+
+    if (quiz.quizType == QuizType.INITIAL && progress.lessons[lesson.id].initialQuizProgress != QuizStatus.FINISHED) {
+        progress.lessons[lesson.id].initialQuizProgress = QuizStatus.STARTED
+        progress.lessons[lesson.id].percentDone = 7
+
+    } else if (quiz.quizType == QuizType.FINAL && progress.lessons[lesson.id].finalQuizProgress != QuizStatus.FINISHED) {
+        progress.lessons[lesson.id].finalQuizProgress = QuizStatus.STARTED
+        progress.lessons[lesson.id].percentDone = 7
+
+    }
+
+    await updateProgressStateDb(progress)
+}
+
+
+export const updateProgressEndQuiz = async (progress: Progress, lesson: Lesson, quiz: Quiz) => {
+    progress.lastActive = new Date()
+    if (!progress.lessons[lesson.id]) {
+        progress.lessons[lesson.id] = {globalStatus: LectionStatus.STARTED} as LessonsProgress
+    }
+    progress.lessons[lesson.id].percentDone = 15
 
     if (quiz.quizType == QuizType.INITIAL) {
-        progress.lessons[lesson.id].initialQuizProgress = QuizStatus.STARTED
+        progress.lessons[lesson.id].initialQuizProgress = QuizStatus.FINISHED
     } else if (quiz.quizType == QuizType.FINAL) {
-        progress.lessons[lesson.id].finalQuizProgress = QuizStatus.STARTED
+        progress.lessons[lesson.id].finalQuizProgress = QuizStatus.FINISHED
     }
 
     await updateProgressStateDb(progress)

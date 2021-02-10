@@ -26,7 +26,13 @@ export const saveUserSolutionDb = async (solution: QuizUserSolution) => {
         solution.id = id
         await AsyncStorage.setItem(id, JSON.stringify(solution));
     } catch (e) {
-        console.log(e)
+        console.log("----",e)
         throw e
     }
+}
+
+export const sendUserSolutionDb = async (solution: QuizUserSolution) => {
+    solution.completed = true
+    solution.finishedAt = new Date()
+    await saveUserSolutionDb(solution)
 }
