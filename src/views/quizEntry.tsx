@@ -28,13 +28,13 @@ const QuizEntry = ({route, navigation}: any) => {
     const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
 
     useEffect(() => {
-        console.log(quiz.questions)
         dispatch(updateStoredActiveQuiz(quiz))
 
         updateProgressStart(progress, lesson)
     }, [lesson]);
 
     useEffect(() => {
+        if (!quiz || !quiz.questions) return
         getPreviousSolution(quiz).then((sol: QuizUserSolution | null) => {
             if (!sol) {
                 const quizUserSolution = {quizId: quiz.id, lessonId: lesson.id} as QuizUserSolution
@@ -209,7 +209,7 @@ const QuizEntry = ({route, navigation}: any) => {
                 <ScrollView
                     contentInsetAdjustmentBehavior="automatic"
                     style={styles.scrollView}>
-                    {quiz && <View>
+                    {quiz && quiz.questions && quiz.questions.length>0 && <View>
                         {quizDetailsCard()}
                         {progressCard()}
                         {quiz.questions && quiz.questions.map((question: Question, index: number) => questionCard(question, index))}
