@@ -27,13 +27,15 @@ const QuizResults = ({route, navigation}: any) => {
     const progress = useSelector((state: any) => state.progress as Progress);
     const forceUpdate = React.useReducer(() => ({}), {})[1] as () => void
 
-    useEffect(() => {
-
-    }, [lesson]);
 
     useEffect(() => {
+        evaluateResults(quiz, quizUserSolution)
+    }, [quiz, lesson, quizUserSolution]);
 
-    }, [quiz, lesson]);
+
+    const evaluateResults = (quiz: Quiz, quizUserSolution: QuizUserSolution) => {
+
+    }
 
     const quizDetailsCard = () => {
         return <Card containerStyle={styles.details}>
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         borderWidth: 2
     },
-    buttonSend:{backgroundColor: 'blue'},
+    buttonSend: {backgroundColor: 'blue'},
     sendCard: {
         marginBottom: 30,
     },
