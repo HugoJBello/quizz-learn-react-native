@@ -5,7 +5,7 @@ import {
 } from "../types/lesson";
 
 const initial = require("../mock/initialLections.json") as Lesson[]
-const initialLectionState: Lesson[] = initial
+const initialLectionState: Lesson[] = []
 
 export function lessonsReducer(
   state: Lesson[] = initialLectionState,

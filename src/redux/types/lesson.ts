@@ -28,5 +28,5 @@ export const UPDATE_LESSONS = 'UPDATE_LECTIONS';
 
 export interface UpdateLectionsAction {
     type: typeof UPDATE_LESSONS;
-    payload: Lesson[];
+    payload: {activeLessons:Lesson[]};
 }

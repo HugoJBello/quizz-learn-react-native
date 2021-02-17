@@ -84,9 +84,9 @@ export const evaluateQuiz = (quiz:Quiz, solution: QuizUserSolution): QuizResults
         const correctResponsesForAnsw = quiz.questions[index].correctAnswers
         const isCorrectAns = isEqual(responses, correctResponsesForAnsw)
 
-        if (isCorrectAns) {
+        if (responses.length>0 && isCorrectAns) {
             quizResult.correctAnswers.push(index)
-        } else {
+        } else if(responses.length>0) {
             quizResult.wrongAnswers.push(index)
         }
     }

@@ -118,7 +118,7 @@ const QuizSolutionResults = ({route, navigation}: any) => {
             return ans.questionIndex == index
         })
         console.log(answ)
-        if (!answ.selectedOptions || answ.selectedOptions.length === 0) return ""
+        if (!answ || !answ.selectedOptions || answ.selectedOptions.length === 0) return ""
 
         const options =  answ.selectedOptions
         const answers = options.map( (opt: number) => quiz.questions[index].answerOptions[opt])

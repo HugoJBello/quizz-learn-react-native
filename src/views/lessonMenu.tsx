@@ -15,7 +15,7 @@ const LessonMenu = ({navigation}:any) => {
   const { t } = useTranslation();
 
   const user = useSelector((state: any) => state.user as User);
-  const lections = useSelector((state: any) => state.lessons as Lesson[]);
+  const lections = useSelector((state: any) => state.lessons.activeLessons as Lesson[]);
   const { theme } = useContext(ThemeContext);
 
   useEffect(() => {

@@ -8,5 +8,5 @@ import {
 } from "../types/lesson";
 
 export const updateStoredLections: ActionCreator<UpdateLectionsAction> = (lections: Lesson[]) => {
-  return {type: UPDATE_LESSONS, payload: lections};
+  return {type: UPDATE_LESSONS, payload: {activeLessons: lections}};
 };
