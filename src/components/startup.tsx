@@ -1,7 +1,8 @@
 import React, {useEffect} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {useTranslation} from "react-i18next";
-import {fetchLessonsData, fetchProcessData} from "../redux/middlewares/progressMiddleware";
+import {fetchProcessData} from "../redux/actions/progress.actions";
+import {fetchLessonsData} from "../redux/actions/lections.actions";
 
 const Startup = () => {
     const {t} = useTranslation();

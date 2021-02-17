@@ -1,13 +1,12 @@
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
+import thunkMiddleware from 'redux-thunk';
 import {rootReducer} from './reducers';
 //import {createLogger} from 'redux-logger';
-import {asyncFunctionMiddleware} from "./middlewares/progressMiddleware";
 
 //const loggerMiddleware = createLogger();
 
-const middleware = applyMiddleware(thunk,
-    asyncFunctionMiddleware
+const middleware = applyMiddleware(thunkMiddleware,
     //loggerMiddleware
 );
 export const store = createStore(rootReducer, middleware);
