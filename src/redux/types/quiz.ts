@@ -9,8 +9,10 @@ export interface Quiz {
     difficultyPercent: number,
     questions: Question[],
     public: boolean,
+    courseId: string,
     date: Date
 }
+
 
 export enum QuizType {
     INITIAL = "INITIAL",

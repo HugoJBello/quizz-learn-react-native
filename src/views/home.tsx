@@ -14,10 +14,13 @@ import {updateStoredUser} from '../redux/actions/user.actions';
 import { Button } from 'react-native-elements';
 import { Divider } from 'react-native-elements';
 import { Tile } from 'react-native-elements';
+import {useTranslation} from "react-i18next";
 
 declare const global: {HermesInternal: null | {}};
 
 const Home = ({navigation}: any) => {
+  const { t } = useTranslation();
+
   const user = useSelector((state: any) => state.user as User);
   const dispatch = useDispatch();
 
@@ -36,16 +39,16 @@ const Home = ({navigation}: any) => {
             <Divider style={{ backgroundColor: 'blue' }} />
             <Tile
                 imageSrc={require('../static/images/learning.jpg')}
-                title="Lections"
+                title={t("Courses")}
                 featured
-                caption="Continue with your progress or discover new ones"
-                onPress={() => navigation.push('LecturesMenu')}
+                caption={t("Continue with your progress or discover new ones")}
+                onPress={() => navigation.push('CoursesMenu')}
 
             />
             <Button
                 title="go!"
                 raised
-                onPress={() => navigation.push('LecturesMenu')}
+                onPress={() => navigation.push('CoursesMenu')}
             />
           </View>
           <Divider style={{ backgroundColor: 'blue' }} />

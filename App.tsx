@@ -22,6 +22,7 @@ import LessonEntry from "./src/views/lessonEntry";
 import QuizEntry from "./src/views/quizEntry";
 import QuizResults from "./src/views/quizResults";
 import QuizSolutionResults from "./src/views/quizResults";
+import CoursesMenu from "./src/views/coursesMenu";
 
 const Stack = createStackNavigator();
 
@@ -70,9 +71,13 @@ const StackMenu = () => {
             options={{title: 'Home'}}
             component={Home}/>
         <Stack.Screen
-            name="LecturesMenu"
+            name="LessonMenu"
             options={{title: 'Lectures and quizzes'}}
             component={LessonMenu}/>
+        <Stack.Screen
+            name="CoursesMenu"
+            options={{title: 'Courses'}}
+            component={CoursesMenu}/>
         <Stack.Screen
             name="LessonEntry"
             options={{title: 'Lesson'}}
