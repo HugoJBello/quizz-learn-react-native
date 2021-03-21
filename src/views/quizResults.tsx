@@ -1,19 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {Badge} from 'react-native-paper';
 import {useTranslation} from "react-i18next";
-import {Card, CheckBox, Divider, Icon, ListItem, Text} from 'react-native-elements'
+import {Button, Card, CheckBox, Divider, Icon, ListItem, Text} from 'react-native-elements'
 import {Lesson} from "../redux/types/lesson";
 import {Progress} from "../redux/types/progress";
-import {updateProgressStartQuiz} from "../services/progressService";
-import {updateStoredProgress} from "../redux/actions/progress.actions";
-import {ProgressBar, Colors} from 'react-native-paper';
-import {Button} from "react-native-elements";
 import {Question, Quiz} from "../redux/types/quiz";
-import {updateStoredActiveQuiz} from "../redux/actions/activeQuiz.actions";
 import {ChosenAnswerMultichoice, QuizUserSolution} from "../redux/types/quizUserSolution";
-import {getUserSolutionDb, saveUserSolutionDb, sendUserSolutionDb} from "../services/userSolutionService";
 import {evaluateQuiz} from "../services/evaluationService";
 import {QuizResults} from "../redux/types/quizResults";
 
@@ -74,6 +67,12 @@ const QuizSolutionResults = ({route, navigation}: any) => {
                     </ListItem.Content>
                 </ListItem>
             </View>}
+
+            <Button
+                onPress={() => navigation.navigate('LessonEntry', {})}
+                title={t('Lesson menu')}
+                type="outline"
+            />
 
         </Card>
     }

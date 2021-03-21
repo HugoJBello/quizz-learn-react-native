@@ -46,7 +46,7 @@ const LessonEntry = ({route, navigation}: any) => {
 
             <Divider/>
 
-            <ListItem disabled={true} onPress={() => navigation.navigate('LessonEntry', {})}
+            <ListItem onPress={() => navigation.navigate('LessonPart', {lesson: lesson, partIndex:0})}
                       bottomDivider>
                 <Icon name="rocket1" type="ant-design"/>
                 <ListItem.Content>
@@ -57,8 +57,7 @@ const LessonEntry = ({route, navigation}: any) => {
 
             <Divider/>
 
-            <ListItem disabled={true} onPress={() => navigation.navigate('LessonEntry', {})}
-                      bottomDivider>
+            <ListItem onPress={() => navigation.navigate('QuizEntry', {lesson:lesson, quiz:lesson.finalQuiz})} bottomDivider>
                 <Icon name="form" type="ant-design"/>
                 <ListItem.Content>
                     <ListItem.Title>{t('Final test')}</ListItem.Title>

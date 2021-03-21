@@ -20,7 +20,7 @@ import Lesson from "./src/views/lessonEntry";
 import Startup from "./src/components/startup";
 import LessonEntry from "./src/views/lessonEntry";
 import QuizEntry from "./src/views/quizEntry";
-import QuizResults from "./src/views/quizResults";
+import LessonPart from "./src/views/lessonParts";
 import QuizSolutionResults from "./src/views/quizResults";
 import CoursesMenu from "./src/views/coursesMenu";
 
@@ -90,6 +90,10 @@ const StackMenu = () => {
             name="QuizResults"
             options={{title: 'Results'}}
             component={QuizSolutionResults}/>
+        <Stack.Screen
+            name="LessonPart"
+            options={{title: 'Lesson Part'}}
+            component={LessonPart}/>
     </Stack.Navigator>
 }
 
