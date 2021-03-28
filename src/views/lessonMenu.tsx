@@ -61,7 +61,7 @@ const LessonMenu = ({route, navigation}:any) => {
                   <ListItem key={i}
                             onPress={() => navigation.navigate('LessonEntry',{lesson:l})}
                             bottomDivider>
-                    <Avatar source= {require('../static/images/classroom.jpg')} />
+                    <Avatar rounded source={{ uri: l.imageUrl }} />
                     <ListItem.Content>
                       <ListItem.Title>{l.title}</ListItem.Title>
                       <ListItem.Subtitle>{l.subtitle}</ListItem.Subtitle>

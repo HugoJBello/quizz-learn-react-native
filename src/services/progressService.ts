@@ -23,7 +23,7 @@ export const initializeProgress = (): Progress => {
         lastActive: new Date(),
         level: 0,
         points: 0,
-        lessons: {},
+        lessonsProgress: {},
         badges: []
     } as Progress
 }
@@ -40,8 +40,8 @@ export const updateProgressStateDb = async (progress: Progress) => {
 
 export const updateProgressStartLesson = async (progress: Progress, lesson: Lesson) => {
     progress.lastActive = new Date()
-    if (!progress.lessons[lesson.id]) {
-        progress.lessons[lesson.id] = {
+    if (!progress.lessonsProgress[lesson.id]) {
+        progress.lessonsProgress[lesson.id] = {
             globalStatus: LectionStatus.STARTED,
             percentDone: 3
         } as LessonsProgress
@@ -51,17 +51,17 @@ export const updateProgressStartLesson = async (progress: Progress, lesson: Less
 
 export const updateProgressStartQuiz = async (progress: Progress, lesson: Lesson, quiz: Quiz) => {
     progress.lastActive = new Date()
-    if (!progress.lessons[lesson.id]) {
-        progress.lessons[lesson.id] = {globalStatus: LectionStatus.STARTED} as LessonsProgress
+    if (!progress.lessonsProgress[lesson.id]) {
+        progress.lessonsProgress[lesson.id] = {globalStatus: LectionStatus.STARTED} as LessonsProgress
     }
 
-    if (quiz.quizType == QuizType.INITIAL && progress.lessons[lesson.id].initialQuizProgress != QuizStatus.FINISHED) {
-        progress.lessons[lesson.id].initialQuizProgress = QuizStatus.STARTED
-        progress.lessons[lesson.id].percentDone = 7
+    if (quiz.quizType == QuizType.INITIAL && progress.lessonsProgress[lesson.id].initialQuizProgress != QuizStatus.FINISHED) {
+        progress.lessonsProgress[lesson.id].initialQuizProgress = QuizStatus.STARTED
+        progress.lessonsProgress[lesson.id].percentDone = 7
 
-    } else if (quiz.quizType == QuizType.FINAL && progress.lessons[lesson.id].finalQuizProgress != QuizStatus.FINISHED) {
-        progress.lessons[lesson.id].finalQuizProgress = QuizStatus.STARTED
-        progress.lessons[lesson.id].percentDone = 7
+    } else if (quiz.quizType == QuizType.FINAL && progress.lessonsProgress[lesson.id].finalQuizProgress != QuizStatus.FINISHED) {
+        progress.lessonsProgress[lesson.id].finalQuizProgress = QuizStatus.STARTED
+        progress.lessonsProgress[lesson.id].percentDone = 7
 
     }
 
@@ -71,15 +71,15 @@ export const updateProgressStartQuiz = async (progress: Progress, lesson: Lesson
 
 export const updateProgressEndQuiz = async (progress: Progress, lesson: Lesson, quiz: Quiz) => {
     progress.lastActive = new Date()
-    if (!progress.lessons[lesson.id]) {
-        progress.lessons[lesson.id] = {globalStatus: LectionStatus.STARTED} as LessonsProgress
+    if (!progress.lessonsProgress[lesson.id]) {
+        progress.lessonsProgress[lesson.id] = {globalStatus: LectionStatus.STARTED} as LessonsProgress
     }
-    progress.lessons[lesson.id].percentDone = 15
+    progress.lessonsProgress[lesson.id].percentDone = 15
 
     if (quiz.quizType == QuizType.INITIAL) {
-        progress.lessons[lesson.id].initialQuizProgress = QuizStatus.FINISHED
+        progress.lessonsProgress[lesson.id].initialQuizProgress = QuizStatus.FINISHED
     } else if (quiz.quizType == QuizType.FINAL) {
-        progress.lessons[lesson.id].finalQuizProgress = QuizStatus.FINISHED
+        progress.lessonsProgress[lesson.id].finalQuizProgress = QuizStatus.FINISHED
     }
 
     await updateProgressStateDb(progress)

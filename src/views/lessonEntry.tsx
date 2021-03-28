@@ -3,13 +3,14 @@ import {SafeAreaView, ScrollView, StyleSheet, View} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 import {User} from '../redux/types/users';
 import {useTranslation} from "react-i18next";
-import {Card, Divider, Icon, ListItem, Text} from 'react-native-elements'
+import {Card, Divider, Icon, ListItem, Text, Tile} from 'react-native-elements'
 import {Lesson} from "../redux/types/lesson";
 import {updateStoredActiveLesson} from "../redux/actions/activeLesson.actions";
 import {Progress} from "../redux/types/progress";
 import {updateProgressStartLesson} from "../services/progressService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
-import { ProgressBar, Colors } from 'react-native-paper';
+import {ProgressBar, Colors, Badge} from 'react-native-paper';
+import {blue50} from "react-native-paper/lib/typescript/styles/colors";
 
 const LessonEntry = ({route, navigation}: any) => {
     const {t} = useTranslation();
@@ -35,7 +36,9 @@ const LessonEntry = ({route, navigation}: any) => {
     const lessonCard = () => {
         return <Card>
             <Card.Title>{lesson.title}</Card.Title>
-
+            <Card.Image
+                source = {{uri: lesson.imageUrl}}
+            />
             <ListItem onPress={() => navigation.navigate('QuizEntry', {lesson:lesson, quiz:lesson.initialQuiz})} bottomDivider>
                 <Icon name="form" type="ant-design"/>
                 <ListItem.Content>
@@ -80,9 +83,28 @@ const LessonEntry = ({route, navigation}: any) => {
     }
 
     const detailsCard = () => {
-        return <Card>
+        return <Card containerStyle={styles.details}>
             <Card.Title>{t('Details')}</Card.Title>
-            <Text>{lesson.description}</Text>
+            <ListItem>
+                <Icon name="info" type="ant-design"/>
+                <ListItem.Content>
+                    <ListItem.Title>{lesson.description}</ListItem.Title>
+                </ListItem.Content>
+            </ListItem>
+
+            <ListItem>
+                <Badge color={"#e3f2fd"}>{lesson.difficultyPercent}</Badge>
+                <ListItem.Content>
+                    <ListItem.Subtitle>{t('difficulty')} </ListItem.Subtitle>
+                </ListItem.Content>
+            </ListItem>
+
+            <ListItem>
+                <Badge>{lesson.parts.length}</Badge>
+                <ListItem.Content>
+                    <ListItem.Subtitle> {t('parts')} </ListItem.Subtitle>
+                </ListItem.Content>
+            </ListItem>
         </Card>
     }
 
@@ -94,8 +116,8 @@ const LessonEntry = ({route, navigation}: any) => {
     }
 
     const getProgressInLection = () => {
-        if (progress && lesson && progress.lessons && progress.lessons[lesson.id]) {
-            return progress.lessons[lesson.id].percentDone/100
+        if (progress && lesson && progress.lessonsProgress && progress.lessonsProgress[lesson.id]) {
+            return progress.lessonsProgress[lesson.id].percentDone/100
         }
     }
 
@@ -122,6 +144,11 @@ const LessonEntry = ({route, navigation}: any) => {
 };
 const styles = StyleSheet.create({
     scrollView: {},
+    details: {marginBottom:20},
+    image:{
+        width:10,
+        height:10
+    },
     body: {
         padding: 10
     },

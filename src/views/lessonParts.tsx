@@ -9,7 +9,7 @@ import {updateStoredActiveLesson} from "../redux/actions/activeLesson.actions";
 import {Progress} from "../redux/types/progress";
 import {updateProgressStartLesson} from "../services/progressService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
-import {ProgressBar, Colors} from 'react-native-paper';
+import HTML from "react-native-render-html";
 
 const LessonPart = ({route, navigation}: any) => {
     const {t} = useTranslation();
@@ -24,9 +24,7 @@ const LessonPart = ({route, navigation}: any) => {
     const progress = useSelector((state: any) => state.progress as Progress);
 
     useEffect(() => {
-        console.log(progress)
-        dispatch(updateStoredActiveLesson(lesson))
-
+        console.log(lesson.parts.length)
         updateProgress(progress, lesson)
     }, [lesson]);
 
@@ -49,7 +47,7 @@ const LessonPart = ({route, navigation}: any) => {
                 </View>
                 <View style={styles.buttonContainer}>
                     <Button type="outline"
-                            disabled={partIndex +1 >lesson.parts.length}
+                            disabled={partIndex >lesson.parts.length-2}
                             onPress={() => navigation.navigate('LessonPart', {lesson: lesson, partIndex:partIndex +1})}
                             title={t('next')}/>
                 </View>
@@ -64,7 +62,12 @@ const LessonPart = ({route, navigation}: any) => {
             <Text style={{textAlign: "center"}}>
                 {part.subtitle}
             </Text>
+        </Card>
+    }
 
+    const contentCard = () => {
+        return <Card>
+            <HTML source={{ html: part.content }} contentWidth={300} />
         </Card>
     }
 
@@ -78,6 +81,9 @@ const LessonPart = ({route, navigation}: any) => {
                     {lesson && part && <View>
                         {navigationCard()}
                         {partCard()}
+                        {contentCard()}
+                        {navigationCard()}
+
                     </View>
                     }
                 </ScrollView>

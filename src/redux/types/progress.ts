@@ -1,8 +1,9 @@
 import {Quiz} from "./quiz";
 
 export interface Progress {
-    lessons: { [lectionId: string]: LessonsProgress },
+    lessonsProgress: { [lectionId: string]: LessonsProgress },
     points: number,
+    userId: string,
     level: number,
     badges: string[],
     lastActive: Date
