@@ -6,6 +6,8 @@ import storage from '@react-native-firebase/storage';
 // collection references
 const results = db().collection('results')
 const quizzesCollection = db().collection('quizzes')
+const quizzesResultsCollection = db().collection('quizzesResults')
+const lessonsResultsCollection = db().collection('lessonsResults')
 const partsCollection = db().collection('lessonContentParts')
 const coursesCollection = db().collection('courses')
 const lessonsCollection = db().collection('lessons')
@@ -16,6 +18,8 @@ export {
     auth,
     results,
     quizzesCollection,
+    quizzesResultsCollection,
+    lessonsResultsCollection,
     coursesCollection,
     lessonsCollection,
     partsCollection,

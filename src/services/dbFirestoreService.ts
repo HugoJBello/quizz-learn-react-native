@@ -1,9 +1,16 @@
-import {coursesCollection, lessonsCollection, partsCollection, quizzesCollection} from "./firebase";
+import {
+    coursesCollection,
+    lessonsCollection, lessonsResultsCollection,
+    partsCollection,
+    quizzesCollection,
+    quizzesResultsCollection
+} from "./firebase";
 
 import { v4 as uuidv4 } from 'uuid';
 import {Quiz} from "../redux/types/quiz";
 import {Lesson, Part} from "../redux/types/lesson";
 import {Course} from "../redux/types/Course";
+import {LessonResults, QuizResults} from "../redux/types/quizResults";
 
 export const getQuizzesAvailable = async (limit: number, skip: number): Promise<Quiz[]> => {
     //const result  = await quizzesCollection.limit(10).where("public", "==", true).orderBy("date", "desc").get()
@@ -110,4 +117,34 @@ export const getPart = async (id: string): Promise<Part | null> => {
     const result = await partsCollection.where("id", "==", id).get()
     console.log(id,result)
     return result.docs[0].data() as Part
+}
+
+export const getQuizResults = async (quizId: string, userId: string): Promise<QuizResults | null> => {
+    const result = await quizzesResultsCollection.where("quizId", "==", quizId)
+        .where("userId", "==", userId).get()
+
+    console.log(quizId,result)
+    return result.docs[0].data() as QuizResults
+}
+
+export const saveQuizResults = async (quizResults: QuizResults) => {
+    if (!quizResults.id) {
+        quizResults.id = uuidv4()
+    }
+    return quizzesResultsCollection.doc(quizResults.id).set(quizResults)
+}
+
+export const getLessonResults = async (lessonId: string, userId: string): Promise<LessonResults | null> => {
+    const result = await lessonsResultsCollection.where("lessonId", "==", lessonId)
+        .where("userId", "==", userId).get()
+
+    console.log(lessonId,result)
+    return result.docs[0].data() as LessonResults
+}
+
+export const saveLessonResults = async (lessonResults: LessonResults) => {
+    if (!lessonResults.id) {
+        lessonResults.id = uuidv4()
+    }
+    return lessonsResultsCollection.doc(lessonResults.id).set(lessonResults)
 }
