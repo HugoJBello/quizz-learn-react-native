@@ -7,7 +7,7 @@ import {Button, Card, Divider, Icon, ListItem, Text} from 'react-native-elements
 import {Lesson, Part} from "../redux/types/lesson";
 import {updateStoredActiveLesson} from "../redux/actions/activeLesson.actions";
 import {Progress} from "../redux/types/progress";
-import {updateProgressStartLesson} from "../services/progressService";
+import {updateProgressStartLesson} from "../services/progressLocalDbService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import HTML from "react-native-render-html";
 

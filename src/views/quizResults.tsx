@@ -7,8 +7,9 @@ import {Lesson} from "../redux/types/lesson";
 import {Progress} from "../redux/types/progress";
 import {Question, Quiz} from "../redux/types/quiz";
 import {ChosenAnswerMultichoice, QuizUserSolution} from "../redux/types/quizUserSolution";
-import {evaluateQuiz} from "../services/evaluationService";
 import {QuizResults} from "../redux/types/quizResults";
+import {evaluateQuiz} from "../services/evaluationService";
+import {saveQuizResults} from "../services/dbFirestoreService";
 
 const QuizSolutionResults = ({route, navigation}: any) => {
     const {t} = useTranslation();
@@ -29,9 +30,12 @@ const QuizSolutionResults = ({route, navigation}: any) => {
     }, [quiz, lesson, quizUserSolution]);
 
 
-    const evaluateResults = (quiz: Quiz, quizUserSolution: QuizUserSolution) => {
+    const evaluateResults = async (quiz: Quiz, quizUserSolution: QuizUserSolution) => {
         const results = evaluateQuiz(quiz, quizUserSolution)
+
         setQuizResults(results)
+
+        await saveQuizResults(results)
     }
 
     const quizResultsCard = () => {

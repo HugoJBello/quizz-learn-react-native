@@ -50,8 +50,16 @@ const Home = ({navigation}: any) => {
                 raised
                 onPress={() => navigation.push('CoursesMenu')}
             />
+            <Button
+                title="login!"
+                raised
+                onPress={() => navigation.push('Login')}
+            />
           </View>
           <Divider style={{ backgroundColor: 'blue' }} />
+
+
+
         </ScrollView>
       </SafeAreaView>
     </>

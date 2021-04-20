@@ -7,7 +7,7 @@ import {Card, Divider, Icon, ListItem, Text, Tile} from 'react-native-elements'
 import {Lesson} from "../redux/types/lesson";
 import {updateStoredActiveLesson} from "../redux/actions/activeLesson.actions";
 import {Progress} from "../redux/types/progress";
-import {updateProgressStartLesson} from "../services/progressService";
+import {updateProgressStartLesson} from "../services/progressLocalDbService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import {ProgressBar, Colors, Badge} from 'react-native-paper';
 import {blue50} from "react-native-paper/lib/typescript/styles/colors";

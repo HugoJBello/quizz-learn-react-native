@@ -7,7 +7,7 @@ import {
   UpdateLectionsAction
 } from "../types/lesson";
 import {Progress, UPDATE_PROGRESS, UpdateProgressAction} from "../types/progress";
-import {getProgressStateDb} from "../../services/progressService";
+import {getProgressStateDb} from "../../services/progressLocalDbService";
 
 export const updateStoredProgress: ActionCreator<UpdateProgressAction> = (progress: Progress) => {
   return {type: UPDATE_PROGRESS, payload: progress};

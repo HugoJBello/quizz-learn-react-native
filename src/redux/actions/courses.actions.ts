@@ -6,9 +6,9 @@ import {
   UpdateActiveLessonAction,
   UpdateLectionsAction
 } from "../types/lesson";
-import {getLessonStateDb} from "../../services/lessonsService";
+import {getLessonStateDb} from "../../services/lessonsLocalDbService";
 import {Course, UPDATE_COURSES, UpdateCoursesAction} from "../types/Course";
-import {getCoursesStateDb} from "../../services/coursesService";
+import {getCoursesStateDb} from "../../services/coursesLocalDbService";
 import {getCoursesAvailable} from "../../services/dbFirestoreService";
 
 export const updateStoredCourses: ActionCreator<UpdateCoursesAction> = (courses: Course[]) => {

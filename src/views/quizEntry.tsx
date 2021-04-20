@@ -6,14 +6,14 @@ import {useTranslation} from "react-i18next";
 import {Card, CheckBox, Icon, ListItem, Text} from 'react-native-elements'
 import {Lesson} from "../redux/types/lesson";
 import {Progress} from "../redux/types/progress";
-import {updateProgressEndQuiz, updateProgressStartQuiz} from "../services/progressService";
+import {updateProgressEndQuiz, updateProgressStartQuiz} from "../services/progressLocalDbService";
 import {updateStoredProgress} from "../redux/actions/progress.actions";
 import {ProgressBar, Colors} from 'react-native-paper';
 import {Button} from "react-native-elements";
 import {Question, Quiz} from "../redux/types/quiz";
 import {updateStoredActiveQuiz} from "../redux/actions/activeQuiz.actions";
 import {ChosenAnswerMultichoice, QuizUserSolution} from "../redux/types/quizUserSolution";
-import {getUserSolutionDb, saveUserSolutionDb, sendUserSolutionDb} from "../services/userSolutionService";
+import {getUserSolutionDb, saveUserSolutionDb, sendUserSolutionDb} from "../services/userSolutionLocalDbService";
 
 const QuizEntry = ({route, navigation}: any) => {
     const {t} = useTranslation();

@@ -23,6 +23,7 @@ import QuizEntry from "./src/views/quizEntry";
 import LessonPart from "./src/views/lessonParts";
 import QuizSolutionResults from "./src/views/quizResults";
 import CoursesMenu from "./src/views/coursesMenu";
+import Login from "./src/views/login";
 
 const Stack = createStackNavigator();
 
@@ -94,6 +95,10 @@ const StackMenu = () => {
             name="LessonPart"
             options={{title: 'Lesson Part'}}
             component={LessonPart}/>
+        <Stack.Screen
+            name="Login"
+            options={{title: 'Login'}}
+            component={Login}/>
     </Stack.Navigator>
 }
 

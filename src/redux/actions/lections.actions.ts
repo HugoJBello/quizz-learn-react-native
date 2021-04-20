@@ -6,10 +6,10 @@ import {
   UpdateActiveLessonAction,
   UpdateLectionsAction
 } from "../types/lesson";
-import {getLessonStateDb} from "../../services/lessonsService";
+import {getLessonStateDb} from "../../services/lessonsLocalDbService";
 import {Course} from "../types/Course";
 import {getCoursesAvailable, getLessonsAvailable} from "../../services/dbFirestoreService";
-import {getCoursesStateDb} from "../../services/coursesService";
+import {getCoursesStateDb} from "../../services/coursesLocalDbService";
 
 export const updateStoredLections: ActionCreator<UpdateLectionsAction> = (lections: Lesson[]) => {
   return {type: UPDATE_LESSONS, payload: {activeLessons: lections}};
