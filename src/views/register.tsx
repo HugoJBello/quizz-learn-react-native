@@ -13,18 +13,20 @@ import {Avatar} from "react-native-elements";
 import {auth} from "../services/firebase";
 import {useDispatch} from "react-redux";
 import {updateStoredUser} from "../redux/actions/user.actions";
+import {useTranslation} from "react-i18next";
 
-export default function Login ({navigation}: any) {
+export default function Register ({navigation}: any) {
     const dispatch = useDispatch()
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const {t} = useTranslation();
 
 
     const login = async () => {
         try {
-            const data = await auth().signInWithEmailAndPassword(email, password)
+            const data = await auth().createUserWithEmailAndPassword(email, password)
             console.log(data)
             dispatch(updateStoredUser(data.user._user))
             navigation.push('Home')
@@ -42,7 +44,7 @@ export default function Login ({navigation}: any) {
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
-                    placeholder="Email."
+                    placeholder={t('Choose email')}
                     placeholderTextColor="#003f5c"
                     onChangeText={(email) => setEmail(email)}
                 />
@@ -51,9 +53,18 @@ export default function Login ({navigation}: any) {
             <View style={styles.inputView}>
                 <TextInput
                     style={styles.TextInput}
-                    placeholder="Password."
+                    placeholder={t('Choose passowrd')}
                     placeholderTextColor="#003f5c"
-                    secureTextEntry={true}
+                    secureTextEntry={false}
+                    onChangeText={(password) => setPassword(password)}
+                />
+            </View>
+            <View style={styles.inputView}>
+                <TextInput
+                    style={styles.TextInput}
+                    placeholder={t('Repeat passowrd')}
+                    placeholderTextColor="#003f5c"
+                    secureTextEntry={false}
                     onChangeText={(password) => setPassword(password)}
                 />
             </View>
